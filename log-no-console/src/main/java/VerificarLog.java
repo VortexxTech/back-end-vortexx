@@ -45,7 +45,7 @@ public class VerificarLog {
 
         System.out.println("""
                 
-                Em %s a média de custo do metro quadrado é R$ 7100.""".formatted(local));
+                Em %s a média de custo do metro quadrado é R$ 7100. O PIB da região é 2.7 bilhões, a densidade demográfica é 7,5 mil e a quantidade populacional da região é 44,41 milhões.""".formatted(local));
 
         String logSimulacaoFeita = formatter.format(timestamp); // ARMAZENANDO O HORÁRIO QUE A SIMULAÇÃO FOI FEITA
         System.out.println("""
