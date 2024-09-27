@@ -48,22 +48,14 @@ public class LerArquivos {
 
             // Itera sobre as linhas
             for (Row CurrentRow : sheet) {
+                String NumRow = toString();
                     linha.add(CurrentRow.getRowNum());
 
-                    for(int i = CurrentRow.getFirstCellNum(); i < CurrentRow.getLastCellNum(); i++){
-                        Cell CurrentCell = CurrentRow.getCell(i);
-
-                        if(CurrentCell != null && CurrentCell.getCellType() == CellType.NUMERIC){
-                            linha.add(CurrentRow.getCell(i));
+                    CurrentRow.forEach(cell -> {
+                        if(cell != null && cell.getCellType() == CellType.NUMERIC){
+                            linha.add(cell.toString());
                         }
-                    }
-
-//                    ModeloLinha linhaObj = new ModeloLinha();
-//
-//                    linhaObj.setNumLinha(linha.get(0));
-//                    linhaObj.setAno(linha.get(1));
-//                    linhaObj.setPrecosCorrentes(linha.get(2));
-//                    linhaObj.setVariacaoRealAnual(linha.get(3));
+                    });
 
                 System.out.println(linha);
 
