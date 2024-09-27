@@ -48,34 +48,26 @@ public class LerArquivos {
 
             // Itera sobre as linhas
             for (Row CurrentRow : sheet) {
-                    linha.add("Linha: " + CurrentRow.getRowNum());
+                    linha.add(CurrentRow.getRowNum());
 
                     for(int i = CurrentRow.getFirstCellNum(); i < CurrentRow.getLastCellNum(); i++){
                         Cell CurrentCell = CurrentRow.getCell(i);
 
                         if(CurrentCell != null && CurrentCell.getCellType() == CellType.NUMERIC){
-                            System.out.println();
-
-                            linha.add("Célula: " + i + " " + CurrentRow.getCell(i));
+                            linha.add(CurrentRow.getCell(i));
                         }
                     }
 
-                    ModeloLinha linhaObj = new ModeloLinha();
+//                    ModeloLinha linhaObj = new ModeloLinha();
+//
+//                    linhaObj.setNumLinha(linha.get(0));
+//                    linhaObj.setAno(linha.get(1));
+//                    linhaObj.setPrecosCorrentes(linha.get(2));
+//                    linhaObj.setVariacaoRealAnual(linha.get(3));
 
-                    linhaObj.setNumLinha(linha.get(0));
-                    linhaObj.setAno(linha.get(1));
-                    linhaObj.setPrecosCorrentes(linha.get(2));
-                    linhaObj.setVariacaoRealAnual(linha.get(3));
-
-                    linhaObj.printarLinha();
+                System.out.println(linha);
 
                     linha.clear();
-
-                    // Itera sobre as células da linha
-//                CurrentRow.forEach( cell -> {
-//                    System.out.print("cell: " + cell + "\t");
-//                });
-                    System.out.println();
                 }
 
         } catch (IOException e) {
