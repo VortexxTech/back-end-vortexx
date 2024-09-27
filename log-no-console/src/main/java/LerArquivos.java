@@ -1,10 +1,10 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 
 public class LerArquivos {
 
@@ -44,14 +44,40 @@ public class LerArquivos {
             // Obtém a primeira planilha
             HSSFSheet sheet = workbook.getSheetAt(0);
 
+            List linha = new ArrayList<>();
+
             // Itera sobre as linhas
-            for (Row row : sheet) {
-                // Itera sobre as células da linha
-                row.forEach(cell -> {
-                    System.out.print(cell.toString() + "\t");
-                });
-                System.out.println();
-            }
+            for (Row CurrentRow : sheet) {
+                    linha.add("Linha: " + CurrentRow.getRowNum());
+
+                    for(int i = CurrentRow.getFirstCellNum(); i < CurrentRow.getLastCellNum(); i++){
+                        Cell CurrentCell = CurrentRow.getCell(i);
+
+                        if(CurrentCell != null && CurrentCell.getCellType() == CellType.NUMERIC){
+                            System.out.println();
+
+                            linha.add("Célula: " + i + " " + CurrentRow.getCell(i));
+                        }
+                    }
+
+                    ModeloLinha linhaObj = new ModeloLinha();
+
+                    linhaObj.setNumLinha(linha.get(0));
+                    linhaObj.setAno(linha.get(1));
+                    linhaObj.setPrecosCorrentes(linha.get(2));
+                    linhaObj.setVariacaoRealAnual(linha.get(3));
+
+                    linhaObj.printarLinha();
+
+                    linha.clear();
+
+                    // Itera sobre as células da linha
+//                CurrentRow.forEach( cell -> {
+//                    System.out.print("cell: " + cell + "\t");
+//                });
+                    System.out.println();
+                }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
