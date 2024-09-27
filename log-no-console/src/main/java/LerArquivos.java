@@ -48,8 +48,7 @@ public class LerArquivos {
 
             // Itera sobre as linhas
             for (Row CurrentRow : sheet) {
-                String NumRow = toString();
-                    linha.add(CurrentRow.getRowNum());
+                    linha.add(String.valueOf(CurrentRow.getRowNum()));
 
                     CurrentRow.forEach(cell -> {
                         if(cell != null && cell.getCellType() == CellType.NUMERIC){
