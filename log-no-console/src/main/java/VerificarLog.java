@@ -1,10 +1,12 @@
+import java.io.IOException;
 import java.sql.SQLOutput;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Scanner;
 
 public class VerificarLog {
-    public static void main(String[] args) {
+    /* public static void main(String[] args) {
         // Pegando o horário e a data de agora
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
@@ -15,7 +17,6 @@ public class VerificarLog {
         String logAplicacaoIniciada = formatter.format(timestamp);
 
         Scanner leitor = new Scanner(System.in);
-
         System.out.println("""
                 ******************************************
                 * APLICAÇÃO INICIADA! - %S *
@@ -62,6 +63,17 @@ public class VerificarLog {
                 """.formatted(logSimulacaoFeita));
 
 
+    }*/
+
+    public static void main(String[] args) throws IOException {
+        LerArquivos arquivos = new LerArquivos();
+
+        // O parametro "csvFile" procura o arquivo csv que vai converter
+        // E o parametro "pathXls" indica a pasta e o nome do arquivo que ele vai criar
+        arquivos.converterCsvToXls("./src/main/java/book.csv","./src/main/java/book.xls");
+
+        arquivos.lerXls("./src/main/java/book.xls");
+
     }
-    }
+}
 
