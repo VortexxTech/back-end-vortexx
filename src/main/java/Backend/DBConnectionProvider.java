@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
 
     public class DBConnectionProvider {
-
         private final DataSource dataSource;
 
         public DBConnectionProvider() {
@@ -18,8 +17,6 @@ import javax.sql.DataSource;
             this.dataSource = basicDataSource;
         }
 
-        public JdbcTemplate getConnection() {
-            return new JdbcTemplate(dataSource);
-        }
+        public JdbcTemplate getConnection() { return new JdbcTemplate(dataSource); }
     }
 

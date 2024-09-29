@@ -1,21 +1,26 @@
 package Backend;
 
 import java.io.*;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import Backend.DBConnectionProvider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
 public class LerArquivos {
+    private static final Logger log = LogManager.getLogger(LerArquivos.class);
+
     public void converterCsvToXls(String csvFile, String pathXls){
 
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile));
              Workbook workbook = new HSSFWorkbook();
              FileOutputStream out = new FileOutputStream(pathXls)) {
-
             Sheet sheet = workbook.createSheet("Dados CSV");
             String line;
             int rowNum = 0;
@@ -39,10 +44,14 @@ public class LerArquivos {
     public void lerXls(String caminhoArquivo){
         try (FileInputStream fis = new FileInputStream(caminhoArquivo);
              HSSFWorkbook workbook = new HSSFWorkbook(fis)) {
+            fazerLog("O arquivo Excel foi aberto.");
+
 //             criarTabela();
 
             // Obtém a primeira planilha
             HSSFSheet sheet = workbook.getSheetAt(0);
+
+            fazerLog("Acesou a planilha");
 
             List linha = new ArrayList<>();
 
@@ -63,6 +72,7 @@ public class LerArquivos {
                     linha.clear();
                 }
 
+            fazerLog("Adicionou todas as linhas da planilha em arrays separadas");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,8 +80,13 @@ public class LerArquivos {
     }
 
     public void criarTabela() {
+        LerArquivos lerArquivos = new LerArquivos();
+
         DBConnectionProvider dbConnectionProvider = new DBConnectionProvider();
+        lerArquivos.fazerLog("Os dados do banco foram recebidos e o banco foi configurado");
+
         JdbcTemplate connection = dbConnectionProvider.getConnection();
+        lerArquivos.fazerLog("A conexão com banco foi estabelecida");
 
         connection.execute("DROP TABLE IF EXISTS filme");
 
@@ -92,6 +107,19 @@ public class LerArquivos {
 
         connection.update("INSERT INTO filme (nome, ano, genero, diretor) VALUES (?, ?, ?, ?)\",\n" +
                 "        \"Matrix\", 1999, \"Ficção Científica\", \"Lana Wachowski, Lilly Wachowski");
+    }
+
+    public void fazerLog(String situacao) {
+        // Pegando o horário e a data de agora
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+        // Variável para formatar a data
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        // Formatando a data
+        String log = formatter.format(timestamp);
+
+        System.out.println(log + " - %s".formatted(situacao));
     }
 
 }
