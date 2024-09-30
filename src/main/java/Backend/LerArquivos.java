@@ -1,5 +1,9 @@
 package Backend;
 
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URL;
 import java.io.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -55,21 +59,28 @@ public class LerArquivos {
 
             List linha = new ArrayList<>();
 
+//            DecimalFormat deci = new DecimalFormat("#,00");
+
             // Itera sobre as linhas
             for (Row CurrentRow : sheet) {
                     linha.add(String.valueOf(CurrentRow.getRowNum()));
 
                     CurrentRow.forEach(cell -> {
                         if(cell != null && cell.getCellType() == CellType.NUMERIC){
-                            linha.add(cell.toString());
+                            var cellText = cell.toString();
+
+                            char charac = '.';
+
+                            Integer i = cellText.indexOf(charac);
+
+                            linha.add(i != -1 ? cellText.substring(0, i) : cellText);
+
                         }
                     });
 
                 System.out.println(linha);
 
-                
-
-                    linha.clear();
+                linha.clear();
                 }
 
             fazerLog("Adicionou todas as linhas da planilha em arrays separadas");

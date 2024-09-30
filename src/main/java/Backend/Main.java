@@ -12,7 +12,9 @@ public class Main {
         // E o parametro "pathXls" indica a pasta e o nome do arquivo que ele vai criar
         //arquivos.converterCsvToXls("./src/main/java/book.csv","./src/main/java/book.xls");
 
-        arquivos.lerXls("./src/main/java/book.xls");
+        arquivos.converterCsvToXls("C:\\SPTech\\Vortexx\\back-end-vortexx\\src\\main\\java\\20240916113529.csv", "C:\\SPTech\\Vortexx\\back-end-vortexx\\src\\main\\java");
+
+        arquivos.lerXls("./src/main/java/s7t5102.xls");
     }
 }
 
