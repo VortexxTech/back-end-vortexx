@@ -17,8 +17,50 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
+import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+
 public class LerArquivos {
     private static final Logger log = LogManager.getLogger(LerArquivos.class);
+
+    public void lerArquivoS3() {
+        // nome do bucket
+        String bucketName = "";
+
+        // nome do arquivo
+        String archiveName = "";
+
+        // Cria o cliente S3
+        S3Client s3 = S3Client.builder()
+                .region(Region.US_EAST_1)
+                .credentialsProvider(ProfileCredentialsProvider.create())
+                .build();
+
+        // Faz a requisição para obter o objeto
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket(bucketName)
+                .key(archiveName)
+                .build();
+
+        // Lê o conteúdo do arquivo
+        try {
+            ResponseInputStream<?> response = s3.getObject(getObjectRequest);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(response));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            // Encerra o cliente S3
+            s3.close();
+        }
+
+    }
 
     public void converterCsvToXls(String csvFile, String pathXls){
 
