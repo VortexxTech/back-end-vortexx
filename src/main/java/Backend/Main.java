@@ -19,16 +19,16 @@ public class Main {
         // E o parametro "pathXls" indica a pasta e o nome do arquivo que ele vai criar
         //arquivos.converterCsvToXls("./src/main/java/book.csv","./src/main/java/book.xls");
 
-        arquivos.converterCsvToXls("src/main/java/20240916113529.csv", "src/main/java");
+//        arquivos.converterCsvToXls("src/main/java/20240916113529.csv", "src/main/java");
 
-        arquivos.lerXls("src/main/java/s7t5102.xls");
+        arquivos.lerXls("/home/ubuntu/JAR/s7t5102.xls");
 
-//        S3Client s3Client = new S3Provider().getS3Client();
-//
-//        List<Bucket> buckets = s3Client.listBuckets().buckets();
-//        for (Bucket bucket : buckets) {
-//            System.out.println("Bucket: " + bucket.name());
-//        }
+        S3Client s3Client = new S3Provider().getS3Client();
+
+        List<Bucket> buckets = s3Client.listBuckets().buckets();
+        for (Bucket bucket : buckets) {
+            System.out.println("Bucket: " + bucket.name());
+        }
     }
 }
 
