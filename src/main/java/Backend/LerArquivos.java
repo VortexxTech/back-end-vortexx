@@ -5,11 +5,13 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.io.*;
+import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import Backend.DBConnectionProvider;
+import S3.S3Provider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,18 +28,9 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 public class LerArquivos {
     private static final Logger log = LogManager.getLogger(LerArquivos.class);
 
-    public void lerArquivoS3() {
-        // nome do bucket
-        String bucketName = "";
+    public void lerArquivoS3(String bucketName, String archiveName) {
 
-        // nome do arquivo
-        String archiveName = "";
-
-        // Cria o cliente S3
-        S3Client s3 = S3Client.builder()
-                .region(Region.US_EAST_1)
-                .credentialsProvider(ProfileCredentialsProvider.create())
-                .build();
+        S3Client s3Client = new S3Provider().getS3Client();
 
         // Faz a requisição para obter o objeto
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
@@ -47,7 +40,7 @@ public class LerArquivos {
 
         // Lê o conteúdo do arquivo
         try {
-            ResponseInputStream<?> response = s3.getObject(getObjectRequest);
+            ResponseInputStream<?> response = s3Client.getObject(getObjectRequest);
             BufferedReader reader = new BufferedReader(new InputStreamReader(response));
             String line;
             while ((line = reader.readLine()) != null) {
@@ -57,7 +50,7 @@ public class LerArquivos {
             e.printStackTrace();
         } finally {
             // Encerra o cliente S3
-            s3.close();
+            s3Client.close();
         }
 
     }
@@ -80,7 +73,7 @@ public class LerArquivos {
             }
 
             workbook.write(out);
-            System.out.println("Conversão concluída!");
+            fazerLog("Conversão Concluída!");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -97,7 +90,7 @@ public class LerArquivos {
             // Obtém a primeira planilha
             HSSFSheet sheet = workbook.getSheetAt(0);
 
-            fazerLog("Acesou a planilha");
+            fazerLog("Acessou a planilha");
 
             List linha = new ArrayList<>();
 
@@ -105,27 +98,37 @@ public class LerArquivos {
 
             // Itera sobre as linhas
             for (Row CurrentRow : sheet) {
-                    linha.add(String.valueOf(CurrentRow.getRowNum()));
+                    //linha.add(String.valueOf(CurrentRow.getRowNum()));
 
                     CurrentRow.forEach(cell -> {
-                        if(cell != null && cell.getCellType() == CellType.NUMERIC){
+                        if(cell != null){
+                            //fazerLog("log da celula: " + cell);
                             var cellText = cell.toString();
 
                             char charac = '.';
+                            char charac2 = '0';
 
-                            Integer i = cellText.indexOf(charac);
+                            Integer dot = cellText.indexOf(charac);
+                            Integer zero = cellText.indexOf(charac2);
 
-                            linha.add(i != -1 ? cellText.substring(0, i) : cellText);
+                            if(dot != -1 || zero != -1) {
+                                linha.add(cellText);
+                            }
 
                         }
                     });
 
-                System.out.println(linha);
+                    if(!linha.isEmpty()){
+                        System.out.println(linha);
+                        Double custoM2 = Double.parseDouble(linha.getFirst().toString());
+                        Double variacaoCustoMedio = Double.parseDouble(linha.get(1).toString());
+                        Double variacaoAnual = Double.parseDouble(linha.get(3).toString());
+                        Double variacaoMensal = Double.parseDouble(linha.get(4).toString());
 
-                linha.clear();
-                }
-
-            fazerLog("Adicionou todas as linhas da planilha em arrays separadas");
+                        inserirDados(custoM2, variacaoCustoMedio, variacaoAnual, variacaoMensal);
+                        linha.clear();
+                    }
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -154,12 +157,13 @@ public class LerArquivos {
                 """);
     }
 
-    public void inserirDados() {
+    public void inserirDados(Double custoM2, Double variacaoMedio, Double variacaoAnual, Double variacaoMensal) {
         DBConnectionProvider dbConnectionProvider = new DBConnectionProvider();
         JdbcTemplate connection = dbConnectionProvider.getConnection();
 
-        connection.update("INSERT INTO filme (nome, ano, genero, diretor) VALUES (?, ?, ?, ?)\",\n" +
-                "        \"Matrix\", 1999, \"Ficção Científica\", \"Lana Wachowski, Lilly Wachowski");
+        String sql = "INSERT INTO Custo (custo_por_m2, variacao_custo_medio, variacao_anual, variacao_mensal) VALUES (?, ?, ?, ?)";
+
+        connection.update(sql, custoM2, variacaoMedio, variacaoAnual, variacaoMensal);
     }
 
     public void fazerLog(String situacao) {
