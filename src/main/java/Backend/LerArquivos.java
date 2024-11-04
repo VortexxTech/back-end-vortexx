@@ -8,10 +8,13 @@ import java.io.*;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import Backend.DBConnectionProvider;
 import S3.S3Provider;
+import java.nio.file.Path;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,6 +27,8 @@ import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.S3Exception;
 
 public class LerArquivos {
     private static final Logger log = LogManager.getLogger(LerArquivos.class);
@@ -85,8 +90,6 @@ public class LerArquivos {
              HSSFWorkbook workbook = new HSSFWorkbook(fis)) {
             fazerLog("O arquivo Excel foi aberto.");
 
-//             criarTabela();
-
             // Obtém a primeira planilha
             HSSFSheet sheet = workbook.getSheetAt(0);
 
@@ -135,28 +138,6 @@ public class LerArquivos {
         }
     }
 
-    public void criarTabela() {
-        LerArquivos lerArquivos = new LerArquivos();
-
-        DBConnectionProvider dbConnectionProvider = new DBConnectionProvider();
-        lerArquivos.fazerLog("Os dados do banco foram recebidos e o banco foi configurado");
-
-        JdbcTemplate connection = dbConnectionProvider.getConnection();
-        lerArquivos.fazerLog("A conexão com banco foi estabelecida");
-
-        connection.execute("DROP TABLE IF EXISTS filme");
-
-        connection.execute("""
-                CREATE TABLE filme (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    nome VARCHAR(255) NOT NULL,
-                    ano INT NOT NULL,
-                    genero VARCHAR(255) NOT NULL,
-                    diretor VARCHAR(255) NOT NULL
-                )
-                """);
-    }
-
     public void inserirDados(Double custoM2, Double variacaoMedio, Double variacaoAnual, Double variacaoMensal) {
         DBConnectionProvider dbConnectionProvider = new DBConnectionProvider();
         JdbcTemplate connection = dbConnectionProvider.getConnection();
@@ -177,6 +158,38 @@ public class LerArquivos {
         String log = formatter.format(timestamp);
 
         System.out.println(log + " - %s".formatted(situacao));
+
+        String LOG_FILE_PATH = "log.txt";  //caminho para o bucket S3
+
+        try (FileWriter fw = new FileWriter(LOG_FILE_PATH, true);
+             PrintWriter pw = new PrintWriter(fw)) {
+
+            pw.println(timestamp + " - " + situacao);
+        } catch (IOException e) {
+            System.out.println("Erro ao escrever no arquivo de log: " + e.getMessage());
+        }
+
+        String S3_KEY = "logs/log.txt"; // Caminho e nome do arquivo no S3
+
+        String S3_NAME = ""; // Nome do bucket
+
+        S3Client s3 = new S3Provider().getS3Client();
+
+        try {
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                    .bucket(S3_NAME)
+                    .key(S3_KEY)
+                    .build();
+
+            // Realiza o upload do arquivo log.txt para o S3
+            s3.putObject(putObjectRequest, Path.of(LOG_FILE_PATH));
+            System.out.println("Log enviado para o S3 com sucesso.");
+
+        } catch (S3Exception e) {
+            System.err.println("Erro ao enviar o log para o S3: " + e.awsErrorDetails().errorMessage());
+        } finally {
+            s3.close();
+        }
     }
 
 }
