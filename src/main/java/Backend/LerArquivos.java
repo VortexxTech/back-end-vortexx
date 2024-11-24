@@ -142,7 +142,7 @@ public class LerArquivos {
         DBConnectionProvider dbConnectionProvider = new DBConnectionProvider();
         JdbcTemplate connection = dbConnectionProvider.getConnection();
 
-        String sql = "INSERT INTO Custo (custo_por_m2, variacao_custo_medio, variacao_anual, variacao_mensal) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO DadosInseridos (valorM2, variacaoCustoMedia, variacaoAnual, variacaoMensal) VALUES (?, ?, ?, ?)";
 
         connection.update(sql, custoM2, variacaoMedio, variacaoAnual, variacaoMensal);
     }
@@ -171,7 +171,7 @@ public class LerArquivos {
 
         String S3_KEY = "logs/log.txt"; // Caminho e nome do arquivo no S3
 
-        String S3_NAME = ""; // Nome do bucket
+        String S3_NAME = "vortex-tech"; // Nome do bucket
 
         S3Client s3 = new S3Provider().getS3Client();
 

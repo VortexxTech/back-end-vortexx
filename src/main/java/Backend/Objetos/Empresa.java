@@ -25,6 +25,10 @@ public class Empresa{
         funcionarios.add(funcionario);
     }
 
+    public void demitirFuncionario(Funcionario funcionario) { this.funcionarios.remove(funcionario); }
+
+    public void demitirGestor(Gestor gestor) { this.gestores.remove(gestor); }
+
     public String getCpnj() {
         return cpnj;
     }

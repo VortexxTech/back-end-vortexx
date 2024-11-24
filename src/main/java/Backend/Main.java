@@ -21,13 +21,14 @@ public class Main {
         // E o parametro "pathXls" indica a pasta e o nome do arquivo que ele vai criar
         //arquivos.converterCsvToXls("./src/main/java/book.csv","./src/main/java/book.xls");
 
-        //arquivos.lerXls("/home/ubuntu/JAR/s7t5102.xls");
+        //arquivos.lerXls("C:/SPTech/Vortexx/back-end-vortexx/src/main/java/s7t5102.xls");
 
         try{
             S3Client s3Client = new S3Provider().getS3Client();
 
             // aqui lista todos os buckets
             List<Bucket> buckets = s3Client.listBuckets().buckets();
+            System.out.println(buckets);
             for (Bucket bucket : buckets) {
                 arquivos.fazerLog("Lendo o Bucket: " + bucket.name());
 
@@ -35,6 +36,7 @@ public class Main {
                 ListObjectsRequest listObjects = ListObjectsRequest.builder()
                         .bucket(bucket.name()) // aqui vai o nome do bucket
                         .build();
+
                 List<S3Object> objects = s3Client.listObjects(listObjects).contents();
                 for (S3Object object : objects) {
 
@@ -55,6 +57,10 @@ public class Main {
 
                 }
             }
+
+//            File arquivoConvertido = new File("convertido.xls");
+//            File arquivoConvertido = new File();
+
             arquivos.lerXls("convertido.xls");
             arquivos.fazerLog("Dados adicionados no banco!");
         } catch (S3Exception error) {

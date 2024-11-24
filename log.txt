@@ -1,0 +1,91 @@
+2024-11-18 17:32:35.885 - Lendo o Bucket: s3-raw-lab1
+2024-11-18 17:41:17.756 - O arquivo Excel foi aberto.
+2024-11-18 17:50:24.895 - Lendo o Bucket: s3-castro-lab
+2024-11-18 17:52:09.072 - Lendo o Bucket: s3-castro-lab
+2024-11-18 17:57:48.78 - Lendo o Bucket: s3-castro-lab
+2024-11-18 17:58:28.89 - Lendo o Bucket: s3-castro-lab
+2024-11-18 17:59:09.252 - Lendo o Bucket: s3-castro-lab
+2024-11-18 17:59:54.291 - Lendo o Bucket: s3-castro-lab
+2024-11-18 18:02:03.314 - Lendo o Bucket: s3-castro-lab
+2024-11-18 18:02:04.563 - Lendo o arquivo: 20240916113529.csv
+2024-11-18 18:02:05.444 - Convertendo arquivo csv
+2024-11-18 18:02:06.231 - Conversão Concluída!
+2024-11-18 18:02:06.936 - O arquivo Excel foi aberto.
+2024-11-18 18:02:07.492 - Acessou a planilha
+2024-11-18 18:06:54.489 - Lendo o Bucket: s3-castro-lab
+2024-11-18 18:06:55.789 - Lendo o arquivo: 20240916113529.csv
+2024-11-18 18:06:56.79 - Convertendo arquivo csv
+2024-11-18 18:06:57.688 - Conversão Concluída!
+2024-11-18 18:06:58.439 - O arquivo Excel foi aberto.
+2024-11-18 18:06:59.053 - Acessou a planilha
+2024-11-18 18:09:57.849 - Lendo o Bucket: s3-castro-lab
+2024-11-18 18:09:59.08 - Lendo o arquivo: 20240916113529.csv
+2024-11-18 18:09:59.913 - Convertendo arquivo csv
+2024-11-18 18:10:00.685 - Conversão Concluída!
+2024-11-18 18:10:01.4 - O arquivo Excel foi aberto.
+2024-11-18 18:10:02.033 - Acessou a planilha
+2024-11-18 18:12:16.702 - Lendo o Bucket: s3-castro-lab
+2024-11-18 18:12:17.893 - Lendo o arquivo: 20240916113529.csv
+2024-11-18 18:12:18.7 - Convertendo arquivo csv
+2024-11-18 18:12:19.438 - Conversão Concluída!
+2024-11-18 18:12:20.086 - O arquivo Excel foi aberto.
+2024-11-18 18:12:20.663 - Acessou a planilha
+2024-11-18 18:13:23.797 - Lendo o Bucket: s3-castro-lab
+2024-11-18 18:13:25.03 - Lendo o arquivo: 20240916113529.csv
+2024-11-18 18:13:25.857 - Convertendo arquivo csv
+2024-11-18 18:13:26.631 - Conversão Concluída!
+2024-11-18 18:13:27.333 - O arquivo Excel foi aberto.
+2024-11-18 18:13:27.912 - Acessou a planilha
+2024-11-18 18:13:29.95 - Dados adicionados no banco!
+2024-11-18 19:58:26.516 - Lendo o Bucket: vortex-tech
+2024-11-18 19:58:37.792 - Lendo o arquivo: 20240916113529.csv
+2024-11-18 19:59:01.038 - Convertendo arquivo csv
+2024-11-18 19:59:01.739 - Conversão Concluída!
+2024-11-18 19:59:02.321 - O arquivo Excel foi aberto.
+2024-11-18 19:59:02.774 - Acessou a planilha
+2024-11-18 20:00:06.033 - Lendo o Bucket: vortex-tech
+2024-11-18 20:00:10.798 - Lendo o arquivo: 20240916113529.csv
+2024-11-18 20:00:11.471 - Convertendo arquivo csv
+2024-11-18 20:00:12.093 - Conversão Concluída!
+2024-11-18 20:00:12.655 - O arquivo Excel foi aberto.
+2024-11-18 20:00:13.103 - Acessou a planilha
+2024-11-18 20:01:12.023 - Lendo o Bucket: vortex-tech
+2024-11-18 20:01:13.151 - Lendo o arquivo: 20240916113529.csv
+2024-11-18 20:01:13.845 - Convertendo arquivo csv
+2024-11-18 20:01:14.445 - Conversão Concluída!
+2024-11-18 20:01:14.999 - O arquivo Excel foi aberto.
+2024-11-18 20:01:15.438 - Acessou a planilha
+2024-11-18 20:05:23.04 - Lendo o Bucket: vortex-tech
+2024-11-18 20:05:30.752 - Lendo o arquivo: 20240916113529.csv
+2024-11-18 20:05:31.407 - Convertendo arquivo csv
+2024-11-18 20:05:32.014 - Conversão Concluída!
+2024-11-18 20:05:32.533 - O arquivo Excel foi aberto.
+2024-11-18 20:05:32.948 - Acessou a planilha
+2024-11-18 20:06:48.485 - Lendo o Bucket: vortex-tech
+2024-11-18 20:06:49.569 - Lendo o arquivo: 20240916113529.csv
+2024-11-18 20:06:50.245 - Convertendo arquivo csv
+2024-11-18 20:06:50.849 - Conversão Concluída!
+2024-11-18 20:06:51.36 - O arquivo Excel foi aberto.
+2024-11-18 20:06:51.787 - Acessou a planilha
+2024-11-18 20:07:33.947 - Lendo o Bucket: vortex-tech
+2024-11-18 20:07:38.617 - Lendo o arquivo: 20240916113529.csv
+2024-11-18 20:07:39.263 - Convertendo arquivo csv
+2024-11-18 20:07:39.862 - Conversão Concluída!
+2024-11-18 20:07:40.377 - O arquivo Excel foi aberto.
+2024-11-18 20:07:40.833 - Acessou a planilha
+2024-11-18 20:09:32.046 - Dados adicionados no banco!
+2024-11-18 20:16:55.956 - Lendo o Bucket: vortex-tech
+2024-11-18 20:16:57.21 - Lendo o arquivo: 20240916113529.csv
+2024-11-18 20:16:58.021 - Convertendo arquivo csv
+2024-11-18 20:16:58.857 - Conversão Concluída!
+2024-11-18 20:16:59.555 - O arquivo Excel foi aberto.
+2024-11-18 20:17:00.125 - Acessou a planilha
+2024-11-18 20:24:41.191 - Lendo o Bucket: vortex-tech
+2024-11-18 20:24:58.132 - Lendo o Bucket: vortex-tech
+2024-11-18 20:24:59.368 - Lendo o arquivo: 20240916113529.csv
+2024-11-18 20:25:00.206 - Convertendo arquivo csv
+2024-11-18 20:25:01.026 - Conversão Concluída!
+2024-11-18 20:25:01.709 - O arquivo Excel foi aberto.
+2024-11-18 20:25:02.336 - Acessou a planilha
+2024-11-18 20:33:26.199 - Lendo o Bucket: vortex-tech
+2024-11-18 20:33:40.494 - Lendo o arquivo: 20240916113529.csv
