@@ -10,9 +10,9 @@ import javax.sql.DataSource;
 
         public DBConnectionProvider() {
             BasicDataSource basicDataSource = new BasicDataSource();
-            basicDataSource.setUrl("jdbc:mysql://%s:3307/vortex".formatted(System.getenv("IP_EC2")));
-            basicDataSource.setUsername(System.getenv("MYSQL_USER"));
-            basicDataSource.setPassword(System.getenv("MYSQL_PASSWORD"));
+            basicDataSource.setUrl("jdbc:mysql://localhost:3306/vortex2");
+            basicDataSource.setUsername("root");
+            basicDataSource.setPassword("Pedro1205*");
 
             this.dataSource = basicDataSource;
         }
