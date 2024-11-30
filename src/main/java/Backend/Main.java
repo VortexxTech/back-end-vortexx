@@ -1,17 +1,7 @@
 package Backend;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import software.amazon.awssdk.core.sync.ResponseTransformer;
-import software.amazon.awssdk.services.s3.S3Client;
+import Backend.ApiArquivos.LerArquivos;
 import software.amazon.awssdk.services.s3.model.*;
-import S3.S3Provider;
-
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws S3Exception {
