@@ -5,7 +5,6 @@ import java.io.*;
 import java.sql.Timestamp;
 import java.util.*;
 
-import Backend.Bairros;
 import Backend.DBConnectionProvider;
 
 import S3.S3Provider;
@@ -17,7 +16,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.endpoints.internal.Value;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 
 public class LerArquivos {

@@ -1,5 +1,7 @@
 package Backend.ApiArquivos;
 
+import jakarta.persistence.*;
+
 import javax.annotation.processing.Generated;
 
 @Entity

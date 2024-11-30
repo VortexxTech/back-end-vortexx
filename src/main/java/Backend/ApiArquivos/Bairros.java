@@ -1,4 +1,4 @@
-package Backend;
+package Backend.ApiArquivos;
 
 public enum Bairros {
     AGUA_RASA("Água Rasa", "Zona Leste"),
