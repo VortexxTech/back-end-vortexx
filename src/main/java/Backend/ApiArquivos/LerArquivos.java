@@ -14,38 +14,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
-import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 
 public class LerArquivos {
     private static final Logger log = LogManager.getLogger(LerArquivos.class);
     private static final S3Client s3Client = new S3Provider().getS3Client();
-
-    public void lerArquivoS3(String bucketName, String archiveName) {
-
-        // Faz a requisição para obter o objeto
-        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-                .bucket(bucketName)
-                .key(archiveName)
-                .build();
-
-        // Lê o conteúdo do arquivo
-        try {
-            ResponseInputStream<?> response = s3Client.getObject(getObjectRequest);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(response));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            // Encerra o cliente S3
-            s3Client.close();
-        }
-
-    }
 
     public void converterCsvToXls(String csvFile, String pathXls) {
 
@@ -72,9 +46,54 @@ public class LerArquivos {
         }
     }
 
-    public void lerXls(String caminhoArquivo, String tipoDado) {
-        try (FileInputStream fis = new FileInputStream(caminhoArquivo);
-             HSSFWorkbook workbook = new HSSFWorkbook(fis)) {
+    public void lerArquivoS3(String bucketName) {
+        try {
+            // Listar todos os objetos no bucket
+            ListObjectsV2Request listRequest = ListObjectsV2Request.builder().bucket(bucketName).build();
+            ListObjectsV2Response listResponse = s3Client.listObjectsV2(listRequest);
+            List<S3Object> objetos = listResponse.contents();
+
+            // Mapear os tipos de arquivo esperados
+            Map<String, String> tipoDadoPorArquivo = new HashMap<>();
+            tipoDadoPorArquivo.put("Bairros_Sao_Paulo_Preco_m2_Corrigido", "valorM2");
+            tipoDadoPorArquivo.put("densidade_sao_paulo_bairros", "densidade");
+            tipoDadoPorArquivo.put("Agregados_preliminares_por_municipios_BR", "idh");
+
+            // Processar cada arquivo no bucket
+            for (S3Object objeto : objetos) {
+                String key = objeto.key();
+                if (tipoDadoPorArquivo.containsKey(key)) {
+                    String tipoDado = tipoDadoPorArquivo.get(key);
+                    System.out.println("Processando arquivo: " + key + " para o tipo de dado: " + tipoDado);
+                    lerEProcessarArquivo(bucketName, key, tipoDado);
+                } else {
+                    System.out.println("Arquivo ignorado: " + key);
+                }
+            }
+        } catch (S3Exception e) {
+            System.err.println("Erro ao acessar o S3: " + e.awsErrorDetails().errorMessage());
+        } finally {
+            // Encerra o cliente S3
+            s3Client.close();
+        }
+    }
+
+    private void lerEProcessarArquivo(String bucketName, String archiveName, String tipoDado) {
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket(bucketName)
+                .key(archiveName)
+                .build();
+
+        try (InputStream inputStream = s3Client.getObject(getObjectRequest)) {
+            // Passa o InputStream diretamente para o método lerXls
+            lerXls(inputStream, tipoDado);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void lerXls(InputStream inputStream, String tipoDado) {
+        try (HSSFWorkbook workbook = new HSSFWorkbook(inputStream)) {
 
             HSSFSheet sheet = workbook.getSheetAt(0);
             List<Long> linha = new ArrayList<>();
@@ -106,7 +125,7 @@ public class LerArquivos {
 
                 if (!linha.isEmpty()) {
                     // Define o valor corretamente com base na linha
-                    Double valor = Double.parseDouble(linha.get(0).toString());  // Supondo que o valor principal está na primeira posição (ajuste conforme necessário)
+                    Double valor = Double.parseDouble(linha.get(0).toString()); // Supondo que o valor principal está na primeira posição (ajuste conforme necessário)
 
                     // Inicializa o Map para o bairro, se não existir
                     for (Bairros bairro : Bairros.values()) {
@@ -117,12 +136,10 @@ public class LerArquivos {
                         Map<String, Double> bairroDados = dadosBairro.get(bairro);
 
                         // Adiciona o valor no map de acordo com o tipo de dado
-                        if (tipoDado.equals("valorM2")) {
-                            bairroDados.put("valorM2", valor);
-                        } else if (tipoDado.equals("densidade")) {
-                            bairroDados.put("densidade", valor);
-                        } else if (tipoDado.equals("idh")) {
-                            bairroDados.put("idh", valor);
+                        switch (tipoDado) {
+                            case "valorM2" -> bairroDados.put("valorM2", valor);
+                            case "densidade" -> bairroDados.put("densidade", valor);
+                            case "idh" -> bairroDados.put("idh", valor);
                         }
                     }
                     linha.clear();
@@ -141,12 +158,10 @@ public class LerArquivos {
         Map<Bairros, Double> dados = new HashMap<>();
         for (Bairros bairro : Bairros.values()) {
             // Dependendo do tipo de dado, faz o mapeamento
-            if (tipoDado.equals("valorM2")) {
-                dados.put(bairro, valor);  // ValorM2
-            } else if (tipoDado.equals("densidade")) {
-                dados.put(bairro, valor);  // Densidade Demográfica
-            } else if (tipoDado.equals("idh")) {
-                dados.put(bairro, valor);  // IDH
+            switch (tipoDado) {
+                case "valorM2" -> dados.put(bairro, valor);  // ValorM2
+                case "densidade" -> dados.put(bairro, valor);  // Densidade Demográfica
+                case "idh" -> dados.put(bairro, valor);  // IDH
             }
         }
         return dados;
