@@ -19,9 +19,9 @@ public class Main {
         // O parametro "csvFile" procura o arquivo csv que vai converter
         // E o parametro "pathXls" indica a pasta e o nome do arquivo que ele vai criar
         arquivos.converterCsvToXls("./src/main/java/book.csv","./src/main/java/book.xls");
-        arquivos.lerPreco("C:/SPTech/Vortexx/back-end-vortexx/src/main/java/s7t5102.xls");
-        arquivos.lerIDH("C:/SPTech/Vortexx/back-end-vortexx/src/main/java/s7t5102.xls");
-        arquivos.lerDensidadeDemografica("C:/SPTech/Vortexx/back-end-vortexx/src/main/java/s7t5102.xls");
+        arquivos.lerPreco("teste" , "C:/SPTech/Vortexx/back-end-vortexx/src/main/java/s7t5102.xls");
+        arquivos.lerIDH("teste" , "C:/SPTech/Vortexx/back-end-vortexx/src/main/java/s7t5102.xls");
+        arquivos.lerDensidadeDemografica("teste" , "C:/SPTech/Vortexx/back-end-vortexx/src/main/java/s7t5102.xls");
 
         try{
             S3Client s3Client = new S3Provider().getS3Client();
@@ -60,7 +60,7 @@ public class Main {
 
            File arquivoConvertido = new File("convertido.xls");
 
-            arquivos.lerPreco("convertido.xls");
+            arquivos.lerPreco("teste", "teste");
             arquivos.fazerLog("Dados adicionados no banco!");
         } catch (S3Exception error) {
             System.out.println(error);

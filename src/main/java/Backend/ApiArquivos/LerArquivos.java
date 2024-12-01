@@ -4,7 +4,6 @@ import java.io.FileOutputStream;
 import java.io.*;
 import java.nio.file.Path;
 import java.sql.Timestamp;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import Backend.DBConnectionProvider;
@@ -147,17 +146,17 @@ public class LerArquivos {
             Double variacaoMensal = (Double) linhaData.get("variacaoMensal");
 
             // Verifica se o bairro já existe na tabela DadosInseridos
-            String verificaBairroSql = "SELECT COUNT(1) FROM DadosInseridos WHERE bairro_nome = ?";
+            String verificaBairroSql = "SELECT COUNT(1) FROM DadosInseridos WHERE bairro = ?";
             Integer bairroExistente = connection.queryForObject(verificaBairroSql, Integer.class, bairro);
 
             if (bairroExistente > 0) {
                 // O bairro já existe, então vamos atualizar os dados dessa linha
-                String updateSql = "UPDATE DadosInseridos SET valorM2 = ?, variacaoPrecoM2 = ?, variacaoAnualPrecoM2 = ?, variacaoMensalPrecoM2 = ? WHERE bairro_nome = ?";
+                String updateSql = "UPDATE DadosInseridos SET valorM2 = ?, variacaoPrecoM2 = ?, variacaoAnualPrecoM2 = ?, variacaoMensalPrecoM2 = ? WHERE bairro = ?";
                 connection.update(updateSql, custoM2, variacaoCustoMedio, variacaoAnual, variacaoMensal, bairro);
                 logger.info("Dados atualizados para o bairro: " + bairro);
             } else {
                 // O bairro não existe, vamos inserir uma nova linha para esse bairro
-                String insertSql = "INSERT INTO DadosInseridos (bairro_nome, valorM2, variacaoPrecoM2, variacaoAnualPrecoM2, variacaoMensalPrecoM2) VALUES (?, ?, ?, ?, ?)";
+                String insertSql = "INSERT INTO DadosInseridos (bairro, valorM2, variacaoPrecoM2, variacaoAnualPrecoM2, variacaoMensalPrecoM2) VALUES (?, ?, ?, ?, ?)";
                 connection.update(insertSql, bairro, custoM2, variacaoCustoMedio, variacaoAnual, variacaoMensal);
                 logger.info("Dados inseridos para o bairro: " + bairro);
             }
