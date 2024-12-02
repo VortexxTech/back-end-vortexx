@@ -163,19 +163,20 @@ public class LerArquivos {
         List<Map<String, Object>> precosList = new ArrayList<>();
 
         // Processa o arquivo Excel
-        try (Workbook workbook = new HSSFWorkbook(s3InputStream)) {
+        try (Workbook workbook = new XSSFWorkbook(s3InputStream)) {
             logger.info("Arquivo Excel aberto com sucesso.");
-            Sheet sheet = workbook.getSheetAt(0);
+            Sheet sheet = workbook.getSheetAt(2);
             logger.info("Acessou a planilha.");
 
             // Itera pelas linhas da planilha, ignorando cabeçalhos
             for (Row row : sheet) {
-                if (row.getRowNum() < 2) continue; // Ignorar cabeçalhos
+                if (row.getRowNum() < 3) continue; // Ignorar cabeçalhos
 
                 Cell bairroCell = row.getCell(0);
                 Cell custoM2Cell = row.getCell(1);
 
                 if (bairroCell != null && custoM2Cell != null) {
+
                     String bairro = bairroCell.getStringCellValue();
                     Double custoM2 = custoM2Cell.getNumericCellValue();
 
@@ -184,6 +185,8 @@ public class LerArquivos {
                     linhaData.put("bairro", bairro);
                     linhaData.put("custoM2", custoM2);
                     precosList.add(linhaData);
+
+                    logger.info("Bairro: " + bairro + " | Preço M²: " + custoM2);
                 }
             }
 
@@ -203,15 +206,15 @@ public class LerArquivos {
             String bairro = (String) linhaData.get("bairro");
             Double custoM2 = (Double) linhaData.get("custoM2");
 
-            String verificaBairroSql = "SELECT COUNT(1) FROM DadosInseridos WHERE bairro = ?";
-            Integer bairroExistente = connection.queryForObject(verificaBairroSql, Integer.class, bairro);
+            String verificaBairroSql = "SELECT COUNT(1) FROM DadosInseridos WHERE LOWER(bairro) LIKE LOWER(?)";
+            Integer bairroExistente = connection.queryForObject(verificaBairroSql, Integer.class, "%" + bairro + "%");
 
             if (bairroExistente > 0) {
-                String updateSql = "UPDATE DadosInseridos SET valorM2 = ? WHERE bairro = ?";
-                connection.update(updateSql, custoM2, bairro);
+                String updateSql = "UPDATE DadosInseridos SET valorM2 = ?, dtInsercao = NOW() WHERE LOWER(bairro) LIKE LOWER(?)";
+                connection.update(updateSql, custoM2, "%" + bairro + "%");
                 logger.info("Dados atualizados para o bairro: " + bairro);
             } else {
-                String insertSql = "INSERT INTO DadosInseridos (bairro, valorM2) VALUES (?, ?)";
+                String insertSql = "INSERT INTO DadosInseridos (bairro, valorM2, dtInsercao) VALUES (?, ?, NOW())";
                 connection.update(insertSql, bairro, custoM2);
                 logger.info("Dados inseridos para o bairro: " + bairro);
             }
@@ -277,12 +280,12 @@ public class LerArquivos {
 
             if (bairroExistente > 0) {
                 // O bairro já existe, então vamos atualizar os dados dessa linha
-                String updateSql = "UPDATE DadosInseridos SET densidadeDemografica = ?, dtInsercao = NOW() WHERE bairro = ?";
-                connection.update(updateSql, densidade, bairro);
+                String updateSql = "UPDATE DadosInseridos SET densidadeDemografica = ?, dtInsercao = NOW() WHERE LOWER(bairro) LIKE LOWER(?)";
+                connection.update(updateSql, densidade, "%" + bairro + "%");
                 System.out.println("Dados atualizados para o bairro: " + bairro);
             } else {
                 // O bairro não existe, vamos inserir uma nova linha para esse bairro
-                String insertSql = "INSERT INTO DadosInseridos (bairro, densidadeDemografica, dtInsercap) VALUES (?, ?, NOW())";
+                String insertSql = "INSERT INTO DadosInseridos (bairro, densidadeDemografica, dtInsercao) VALUES (?, ?, NOW())";
                 connection.update(insertSql, bairro, densidade);
                 System.out.println("Dados inseridos para o bairro: " + bairro);
             }
@@ -343,8 +346,8 @@ public class LerArquivos {
 
         if (bairroExistente > 0) {
             // O bairro já existe, então vamos atualizar o valor de IDH
-            String updateSql = "UPDATE DadosInseridos SET idh = ?, dtInsercao = NOW() WHERE bairro = ?";
-            connection.update(updateSql, idh, bairro);
+            String updateSql = "UPDATE DadosInseridos SET idh = ?, dtInsercao = NOW() WHERE LOWER(bairro) LIKE LOWER(?)";
+            connection.update(updateSql, idh, "%" + bairro + "%");
             System.out.println("Dados do IDH atualizados para o bairro: " + bairro);
         } else {
             // O bairro não existe, vamos inserir uma nova linha para esse bairro
