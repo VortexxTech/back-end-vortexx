@@ -10,6 +10,8 @@ import Backend.DBConnectionProvider;
 import S3.S3Provider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -169,22 +171,28 @@ public class LerArquivos {
         if (arquivoS3 != null) {
             List<Map<String, Object>> bairrosDensidadeList = new ArrayList<>();
 
-            try (HSSFWorkbook workbook = new HSSFWorkbook(arquivoS3)) {
-                HSSFSheet sheet = workbook.getSheetAt(0);
+            try (XSSFWorkbook workbook = new XSSFWorkbook(arquivoS3)) {
+                XSSFSheet sheet = workbook.getSheetAt(0);
 
                 // Itera sobre as linhas do Excel
                 for (Row row : sheet) {
-                    String territorialidade = row.getCell(0) != null ? row.getCell(0).getStringCellValue() : "";
-                    Double populacaoTotal = row.getCell(1) != null ? row.getCell(1).getNumericCellValue() : 0.0;
+                    if(row.getCell(0) == null || row.getCell(1) == null) {
+                        break;
+                    }
+                    if(row.getCell(1).getCellType() == CellType.NUMERIC) {
+                        String territorialidade = row.getCell(0) != null ? row.getCell(0).getStringCellValue() : "";
+                        Double populacaoTotal = row.getCell(1) != null ? row.getCell(1).getNumericCellValue() : 0.0;
 
-                    // Adiciona os dados na lista
-                    Map<String, Object> bairroData = new HashMap<>();
-                    bairroData.put("bairro", territorialidade);
-                    bairroData.put("densidade", populacaoTotal.intValue());  // Converte para inteiro
+                        // Adiciona os dados na lista
+                        Map<String, Object> bairroData = new HashMap<>();
+                        bairroData.put("bairro", territorialidade);
+                        bairroData.put("densidade", populacaoTotal.intValue());  // Converte para inteiro
 
-                    bairrosDensidadeList.add(bairroData);
+                        bairrosDensidadeList.add(bairroData);
 
-                    System.out.println("Territorialidade: " + territorialidade + " | População Total 2010: " + populacaoTotal);
+                        System.out.println("Territorialidade: " + territorialidade + " | População Total 2010: " + populacaoTotal);
+                    }
+
                 }
 
                 inserirDadosDensidadeDemografica(bairrosDensidadeList);
@@ -213,12 +221,12 @@ public class LerArquivos {
 
             if (bairroExistente > 0) {
                 // O bairro já existe, então vamos atualizar os dados dessa linha
-                String updateSql = "UPDATE DadosInseridos SET densidade = ? WHERE bairro = ?";
+                String updateSql = "UPDATE DadosInseridos SET densidadeDemografica = ? WHERE bairro = ?";
                 connection.update(updateSql, densidade, bairro);
                 System.out.println("Dados atualizados para o bairro: " + bairro);
             } else {
                 // O bairro não existe, vamos inserir uma nova linha para esse bairro
-                String insertSql = "INSERT INTO DadosInseridos (bairro, densidade) VALUES (?, ?)";
+                String insertSql = "INSERT INTO DadosInseridos (bairro, densidadeDemografica) VALUES (?, ?)";
                 connection.update(insertSql, bairro, densidade);
                 System.out.println("Dados inseridos para o bairro: " + bairro);
             }

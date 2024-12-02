@@ -12,7 +12,7 @@ import javax.sql.DataSource;
             BasicDataSource basicDataSource = new BasicDataSource();
             basicDataSource.setUrl("jdbc:mysql://localhost:3306/vortex2");
             basicDataSource.setUsername("root");
-            basicDataSource.setPassword("Pedro1205*");
+            basicDataSource.setPassword("castrito");
 
             this.dataSource = basicDataSource;
         }
