@@ -5,29 +5,26 @@ import java.util.List;
 
 public class Empresa{
     private String cpnj;
-    private Gestor gestor;
     private List<Funcionario> funcionarios = new ArrayList();
-    private List<Gestor> gestores = new ArrayList();
+    private List<Usuario> usuarios = new ArrayList();
 
-    public Empresa(String cpnj, Gestor gestor) {
+    public Empresa(String cpnj) {
         this.cpnj = cpnj;
-        this.gestor = gestor;
+        this.funcionarios = new ArrayList<>();
+        this.usuarios = new ArrayList<>();
     }
 
-    public Empresa() {
-    }
-
-    public void adicionarGestor(Gestor gestor) {
-        gestores.add(gestor);
+    public void adicionarUsuario(Usuario usuario) {
+        usuarios.add(usuario);
     }
 
     public void adicionarFuncionario(Funcionario funcionario) {
         funcionarios.add(funcionario);
     }
 
-    public void demitirFuncionario(Funcionario funcionario) { this.funcionarios.remove(funcionario); }
+    public void removerUsuario(Usuario usuario) { this.usuarios.remove(usuario); }
 
-    public void demitirGestor(Gestor gestor) { this.gestores.remove(gestor); }
+    public void removerFuncionario(Funcionario funcionario) { this.funcionarios.remove(funcionario); }
 
     public String getCpnj() {
         return cpnj;
@@ -37,12 +34,12 @@ public class Empresa{
         this.cpnj = cpnj;
     }
 
-    public Gestor getGestor() {
-        return gestor;
+    public List<Usuario> getUsuarios() {
+        return usuarios;
     }
 
-    public void setGestor(Gestor gestor) {
-        this.gestor = gestor;
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
     }
 
     public List<Funcionario> getFuncionarios() {

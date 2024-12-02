@@ -89,3 +89,218 @@
 2024-11-18 20:25:02.336 - Acessou a planilha
 2024-11-18 20:33:26.199 - Lendo o Bucket: vortex-tech
 2024-11-18 20:33:40.494 - Lendo o arquivo: 20240916113529.csv
+2024-11-29 20:06:54.481 - O arquivo Excel foi aberto.
+2024-11-29 20:06:54.515 - Acessou a planilha
+2024-11-29 20:09:11.326 - O arquivo Excel foi aberto.
+2024-11-29 20:09:11.359 - Acessou a planilha
+2024-11-29 20:09:11.487 - Dados adicionados no banco!
+2024-11-29 20:16:15.119 - O arquivo Excel foi aberto.
+2024-11-29 20:16:15.151 - Acessou a planilha
+2024-11-29 20:16:15.153 - log da celula: Custos médios e índices, segundo as áreas geográficas
+2024-11-29 20:16:15.153 - log da celula:  Unidade Geográfica
+2024-11-29 20:16:15.154 - log da celula: Custo médio m² - moeda corrente-Reais
+2024-11-29 20:16:15.154 - log da celula: Custo médio m² - número-índice-Número-índice
+2024-11-29 20:16:15.154 - log da celula: Custo médio m² - variação percentual em doze meses-%
+2024-11-29 20:16:15.155 - log da celula: Custo médio m² - variação percentual no ano-%
+2024-11-29 20:16:15.155 - log da celula: Custo médio m² - variação percentual no mês-%
+2024-11-29 20:16:15.155 - log da celula: Acre
+2024-11-29 20:16:15.155 - log da celula: 1950.92
+2024-11-29 20:16:15.156 - log da celula: 1035.33
+2024-11-29 20:16:15.156 - log da celula: 4.5
+2024-11-29 20:16:15.156 - log da celula: 4.01
+2024-11-29 20:16:15.157 - log da celula: 0.43
+2024-11-29 20:16:15.293 - log da celula: Alagoas
+2024-11-29 20:16:15.294 - log da celula: 1588.38
+2024-11-29 20:16:15.294 - log da celula: 793.32
+2024-11-29 20:16:15.295 - log da celula: 3.8
+2024-11-29 20:16:15.295 - log da celula: 1.58
+2024-11-29 20:16:15.295 - log da celula: 0.1
+2024-11-29 20:16:15.296 - log da celula: Amapá
+2024-11-29 20:16:15.296 - log da celula: 1761.39
+2024-11-29 20:16:15.296 - log da celula: 855.49
+2024-11-29 20:16:15.296 - log da celula: 5.33
+2024-11-29 20:16:15.296 - log da celula: 3.8
+2024-11-29 20:16:15.297 - log da celula: 0
+2024-11-29 20:16:15.297 - log da celula: Amazonas
+2024-11-29 20:16:15.297 - log da celula: 1816.93
+2024-11-29 20:16:15.297 - log da celula: 889.4
+2024-11-29 20:16:15.297 - log da celula: 3.79
+2024-11-29 20:16:15.297 - log da celula: 1.33
+2024-11-29 20:16:15.297 - log da celula: 0.55
+2024-11-29 20:16:15.298 - log da celula: Bahia
+2024-11-29 20:16:15.298 - log da celula: 1639.2
+2024-11-29 20:16:15.298 - log da celula: 867.69
+2024-11-29 20:16:15.298 - log da celula: 3.07
+2024-11-29 20:16:15.298 - log da celula: 2.81
+2024-11-29 20:16:15.299 - log da celula: 0.27
+2024-11-29 20:16:15.299 - log da celula: Brasil
+2024-11-29 20:16:15.3 - log da celula: 1767.09
+2024-11-29 20:16:15.3 - log da celula: 884.5
+2024-11-29 20:16:15.301 - log da celula: 3.12
+2024-11-29 20:16:15.301 - log da celula: 2.61
+2024-11-29 20:16:15.301 - log da celula: 0.63
+2024-11-29 20:16:15.302 - log da celula: Ceará
+2024-11-29 20:16:15.302 - log da celula: 1646.06
+2024-11-29 20:16:15.302 - log da celula: 950.84
+2024-11-29 20:16:15.303 - log da celula: 4.05
+2024-11-29 20:16:15.303 - log da celula: 4.06
+2024-11-29 20:16:15.303 - log da celula: 1.1
+2024-11-29 20:16:15.304 - log da celula: Centro-Oeste
+2024-11-29 20:16:15.304 - log da celula: 1784.93
+2024-11-29 20:16:15.304 - log da celula: 910.95
+2024-11-29 20:16:15.305 - log da celula: 2.46
+2024-11-29 20:16:15.305 - log da celula: 1.69
+2024-11-29 20:16:15.306 - log da celula: 0.14
+2024-11-29 20:16:15.306 - log da celula: Distrito Federal
+2024-11-29 20:16:15.306 - log da celula: 1816.88
+2024-11-29 20:16:15.306 - log da celula: 802.49
+2024-11-29 20:16:15.306 - log da celula: 1.88
+2024-11-29 20:16:15.308 - log da celula: 1.35
+2024-11-29 20:16:15.308 - log da celula: 0.05
+2024-11-29 20:16:15.309 - log da celula: Espírito Santo
+2024-11-29 20:16:15.309 - log da celula: 1602.59
+2024-11-29 20:16:15.309 - log da celula: 889.12
+2024-11-29 20:16:15.309 - log da celula: 1.42
+2024-11-29 20:16:15.31 - log da celula: 1.52
+2024-11-29 20:16:15.31 - log da celula: 0.36
+2024-11-29 20:16:15.31 - log da celula: Goiás
+2024-11-29 20:16:15.31 - log da celula: 1742.71
+2024-11-29 20:16:15.31 - log da celula: 920.48
+2024-11-29 20:16:15.311 - log da celula: 1.93
+2024-11-29 20:16:15.311 - log da celula: 1.96
+2024-11-29 20:16:15.311 - log da celula: 0.01
+2024-11-29 20:16:15.311 - log da celula: Maranhão
+2024-11-29 20:16:15.312 - log da celula: 1720.99
+2024-11-29 20:16:15.312 - log da celula: 906.87
+2024-11-29 20:16:15.312 - log da celula: 5.26
+2024-11-29 20:16:15.313 - log da celula: 4.06
+2024-11-29 20:16:15.313 - log da celula: 0.22
+2024-11-29 20:16:15.313 - log da celula: Mato Grosso
+2024-11-29 20:16:15.313 - log da celula: 1828.81
+2024-11-29 20:16:15.314 - log da celula: 1043.09
+2024-11-29 20:16:15.314 - log da celula: 3.65
+2024-11-29 20:16:15.314 - log da celula: 1.51
+2024-11-29 20:16:15.314 - log da celula: 0.31
+2024-11-29 20:16:15.315 - log da celula: Mato Grosso do Sul
+2024-11-29 20:16:15.315 - log da celula: 1738.68
+2024-11-29 20:16:15.316 - log da celula: 817.86
+2024-11-29 20:16:15.316 - log da celula: 2.17
+2024-11-29 20:16:15.317 - log da celula: 2.18
+2024-11-29 20:16:15.317 - log da celula: 0.22
+2024-11-29 20:16:15.317 - log da celula: Minas Gerais
+2024-11-29 20:16:15.318 - log da celula: 1655.62
+2024-11-29 20:16:15.319 - log da celula: 911.08
+2024-11-29 20:16:15.319 - log da celula: 2.44
+2024-11-29 20:16:15.319 - log da celula: 2.71
+2024-11-29 20:16:15.319 - log da celula: 0.02
+2024-11-29 20:16:15.319 - log da celula: Nordeste
+2024-11-29 20:16:15.32 - log da celula: 1643.19
+2024-11-29 20:16:15.32 - log da celula: 887.68
+2024-11-29 20:16:15.32 - log da celula: 3.22
+2024-11-29 20:16:15.32 - log da celula: 2.77
+2024-11-29 20:16:15.321 - log da celula: 0.38
+2024-11-29 20:16:15.321 - log da celula: Norte
+2024-11-29 20:16:15.322 - log da celula: 1815.94
+2024-11-29 20:16:15.322 - log da celula: 904.79
+2024-11-29 20:16:15.322 - log da celula: 4.27
+2024-11-29 20:16:15.322 - log da celula: 2.46
+2024-11-29 20:16:15.323 - log da celula: 0.41
+2024-11-29 20:16:15.323 - log da celula: Paraná
+2024-11-29 20:16:15.323 - log da celula: 1895.83
+2024-11-29 20:16:15.324 - log da celula: 906.6
+2024-11-29 20:16:15.324 - log da celula: 4.55
+2024-11-29 20:16:15.324 - log da celula: 3.91
+2024-11-29 20:16:15.325 - log da celula: 2.84
+2024-11-29 20:16:15.325 - log da celula: Paraíba
+2024-11-29 20:16:15.325 - log da celula: 1694.91
+2024-11-29 20:16:15.326 - log da celula: 937.29
+2024-11-29 20:16:15.326 - log da celula: 2.74
+2024-11-29 20:16:15.326 - log da celula: 2.64
+2024-11-29 20:16:15.327 - log da celula: 0.03
+2024-11-29 20:16:15.327 - log da celula: Pará
+2024-11-29 20:16:15.327 - log da celula: 1761.57
+2024-11-29 20:16:15.327 - log da celula: 844.71
+2024-11-29 20:16:15.327 - log da celula: 3.45
+2024-11-29 20:16:15.328 - log da celula: 1.68
+2024-11-29 20:16:15.328 - log da celula: 0.36
+2024-11-29 20:16:15.328 - log da celula: Pernambuco
+2024-11-29 20:16:15.328 - log da celula: 1580.17
+2024-11-29 20:16:15.329 - log da celula: 844.77
+2024-11-29 20:16:15.329 - log da celula: -0.52
+2024-11-29 20:16:15.329 - log da celula: 0.69
+2024-11-29 20:16:15.329 - log da celula: 0.42
+2024-11-29 20:16:15.33 - log da celula: Piauí
+2024-11-29 20:16:15.33 - log da celula: 1647.04
+2024-11-29 20:16:15.33 - log da celula: 1094.66
+2024-11-29 20:16:15.331 - log da celula: 5.2
+2024-11-29 20:16:15.331 - log da celula: 1.99
+2024-11-29 20:16:15.331 - log da celula: 0.17
+2024-11-29 20:16:15.332 - log da celula: Rio Grande do Norte
+2024-11-29 20:16:15.332 - log da celula: 1670.74
+2024-11-29 20:16:15.333 - log da celula: 842.12
+2024-11-29 20:16:15.333 - log da celula: 5.78
+2024-11-29 20:16:15.333 - log da celula: 3.25
+2024-11-29 20:16:15.333 - log da celula: 0.24
+2024-11-29 20:16:15.334 - log da celula: Rio Grande do Sul
+2024-11-29 20:16:15.334 - log da celula: 1769.02
+2024-11-29 20:16:15.334 - log da celula: 802.74
+2024-11-29 20:16:15.334 - log da celula: 2.37
+2024-11-29 20:16:15.335 - log da celula: 1.99
+2024-11-29 20:16:15.335 - log da celula: 1.42
+2024-11-29 20:16:15.335 - log da celula: Rio de Janeiro
+2024-11-29 20:16:15.336 - log da celula: 1952.14
+2024-11-29 20:16:15.336 - log da celula: 889.68
+2024-11-29 20:16:15.336 - log da celula: 3.35
+2024-11-29 20:16:15.337 - log da celula: 3.05
+2024-11-29 20:16:15.337 - log da celula: 0.28
+2024-11-29 20:16:15.337 - log da celula: Rondônia
+2024-11-29 20:16:15.337 - log da celula: 1950.39
+2024-11-29 20:16:15.338 - log da celula: 1087.56
+2024-11-29 20:16:15.339 - log da celula: 8.06
+2024-11-29 20:16:15.339 - log da celula: 6.97
+2024-11-29 20:16:15.339 - log da celula: 0.59
+2024-11-29 20:16:15.34 - log da celula: Roraima
+2024-11-29 20:16:15.34 - log da celula: 1911.46
+2024-11-29 20:16:15.341 - log da celula: 793.92
+2024-11-29 20:16:15.341 - log da celula: 5.7
+2024-11-29 20:16:15.342 - log da celula: 2.06
+2024-11-29 20:16:15.342 - log da celula: 0.19
+2024-11-29 20:16:15.343 - log da celula: Santa Catarina
+2024-11-29 20:16:15.343 - log da celula: 2011.3
+2024-11-29 20:16:15.343 - log da celula: 1088.87
+2024-11-29 20:16:15.344 - log da celula: 1.79
+2024-11-29 20:16:15.344 - log da celula: 1.2
+2024-11-29 20:16:15.344 - log da celula: 0.55
+2024-11-29 20:16:15.345 - log da celula: Sergipe
+2024-11-29 20:16:15.345 - log da celula: 1576.94
+2024-11-29 20:16:15.345 - log da celula: 837.82
+2024-11-29 20:16:15.345 - log da celula: 3.28
+2024-11-29 20:16:15.346 - log da celula: 3.08
+2024-11-29 20:16:15.346 - log da celula: 0.02
+2024-11-29 20:16:15.347 - log da celula: Sudeste
+2024-11-29 20:16:15.347 - log da celula: 1812.5
+2024-11-29 20:16:15.348 - log da celula: 867.65
+2024-11-29 20:16:15.348 - log da celula: 2.94
+2024-11-29 20:16:15.348 - log da celula: 2.74
+2024-11-29 20:16:15.35 - log da celula: 0.58
+2024-11-29 20:16:15.35 - log da celula: Sul
+2024-11-29 20:16:15.351 - log da celula: 1891.57
+2024-11-29 20:16:15.351 - log da celula: 904.65
+2024-11-29 20:16:15.352 - log da celula: 3.21
+2024-11-29 20:16:15.352 - log da celula: 2.66
+2024-11-29 20:16:15.352 - log da celula: 1.82
+2024-11-29 20:16:15.353 - log da celula: São Paulo
+2024-11-29 20:16:15.353 - log da celula: 1867.85
+2024-11-29 20:16:15.354 - log da celula: 843.37
+2024-11-29 20:16:15.354 - log da celula: 3.13
+2024-11-29 20:16:15.354 - log da celula: 2.7
+2024-11-29 20:16:15.355 - log da celula: 1.03
+2024-11-29 20:16:15.355 - log da celula: Tocantins
+2024-11-29 20:16:15.355 - log da celula: 1873.88
+2024-11-29 20:16:15.355 - log da celula: 985.21
+2024-11-29 20:16:15.356 - log da celula: 4.72
+2024-11-29 20:16:15.356 - log da celula: 3.76
+2024-11-29 20:16:15.356 - log da celula: 0.6
+2024-11-29 20:16:15.356 - log da celula: 
+2024-11-29 20:16:15.357 - log da celula: Fonte: "IBGE - Sistema Nacional de Pesquisa de Custos e Índices da Construção Civil"
+2024-11-29 20:16:15.357 - Dados adicionados no banco!
