@@ -183,6 +183,9 @@ public class LerArquivos {
                         String territorialidade = row.getCell(0) != null ? row.getCell(0).getStringCellValue() : "";
                         Double populacaoTotal = row.getCell(1) != null ? row.getCell(1).getNumericCellValue() : 0.0;
 
+                        String regex = "\\([^)]*\\)";
+                        territorialidade = territorialidade.replaceAll(regex, "").trim();
+
                         // Adiciona os dados na lista
                         Map<String, Object> bairroData = new HashMap<>();
                         bairroData.put("bairro", territorialidade);
@@ -216,17 +219,17 @@ public class LerArquivos {
             Integer densidade = (Integer) bairroData.get("densidade");
 
             // Verifica se o bairro já existe na tabela DadosInseridos
-            String verificaBairroSql = "SELECT COUNT(1) FROM DadosInseridos WHERE bairro = ?";
-            Integer bairroExistente = connection.queryForObject(verificaBairroSql, Integer.class, bairro);
+            String verificaBairroSql = "SELECT COUNT(1) FROM DadosInseridos WHERE LOWER(bairro) LIKE LOWER(?)";
+            Integer bairroExistente = connection.queryForObject(verificaBairroSql, Integer.class, "%" + bairro + "%");
 
             if (bairroExistente > 0) {
                 // O bairro já existe, então vamos atualizar os dados dessa linha
-                String updateSql = "UPDATE DadosInseridos SET densidadeDemografica = ? WHERE bairro = ?";
+                String updateSql = "UPDATE DadosInseridos SET densidadeDemografica = ?, dtInsercao = NOW() WHERE bairro = ?";
                 connection.update(updateSql, densidade, bairro);
                 System.out.println("Dados atualizados para o bairro: " + bairro);
             } else {
                 // O bairro não existe, vamos inserir uma nova linha para esse bairro
-                String insertSql = "INSERT INTO DadosInseridos (bairro, densidadeDemografica) VALUES (?, ?)";
+                String insertSql = "INSERT INTO DadosInseridos (bairro, densidadeDemografica, dtInsercap) VALUES (?, ?, NOW())";
                 connection.update(insertSql, bairro, densidade);
                 System.out.println("Dados inseridos para o bairro: " + bairro);
             }
@@ -234,48 +237,46 @@ public class LerArquivos {
     }
 
     public void lerIDH(String bucketName, String archiveName) {
-        // Cria uma lista para armazenar os bairros e seus respectivos IDH
-        List<Map<String, Object>> bairrosIDHList = new ArrayList<>();
+        InputStream arquivoS3 = lerArquivoS3(bucketName, archiveName);
 
-        try {
-            S3Client s3Client = new S3Provider().getS3Client();
-            GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-                    .bucket(bucketName)
-                    .key(archiveName)
-                    .build();
+        if(arquivoS3 != null) {
+            List<Map<String, Object>> bairrosIDHList = new ArrayList<>();
 
-            // Lê o conteúdo do arquivo
-            try (ResponseInputStream<?> response = s3Client.getObject(getObjectRequest);
-                 BufferedReader reader = new BufferedReader(new InputStreamReader(response))) {
-                String line;
+            try (HSSFWorkbook workbook = new HSSFWorkbook(arquivoS3)) {
+                HSSFSheet sheet = workbook.getSheetAt(0);
 
-                // Itera sobre as linhas do arquivo
-                while ((line = reader.readLine()) != null) {
-                    String[] values = line.split("\t"); // Ou use "," dependendo do formato
-                    if (values.length > 1) {
-                        String bairro = values[0].trim();
-                        Double idh = Double.parseDouble(values[5].replace(",", ".").trim());
+                //Itera sobre as linhas do arquivo
+                for (int i = 7; sheet.getRow(i).getRowNum() <= sheet.getRow(37).getRowNum(); i++) {
+                    String territorialidade = sheet.getRow(i).getCell(0) != null ? sheet.getRow(i).getCell(0).getStringCellValue() : "";
+                    Double idh = sheet.getRow(i).getCell(5) != null ? sheet.getRow(i).getCell(5).getNumericCellValue() : 0.0;
 
-                        // Adiciona o bairro e o IDH à lista
-                        Map<String, Object> bairroData = new HashMap<>();
-                        bairroData.put("bairro", bairro);
-                        bairroData.put("idh", idh);
-                        bairrosIDHList.add(bairroData);
-                    }
+                    String regex = "\\([^)]*\\)";
+                    territorialidade = territorialidade.replaceAll(regex, "").trim();
+
+                    System.out.println("Territorialidade: " + territorialidade + " | IDHM: " + idh);
+
+                    // Adiciona o bairro e o IDH à lista
+                    Map<String, Object> bairroData = new HashMap<>();
+                    bairroData.put("bairro", territorialidade);
+                    bairroData.put("idh", idh);
+                    bairrosIDHList.add(bairroData);
+                }
+
+                for (Map<String, Object> bairroData : bairrosIDHList) {
+                    String bairro = (String) bairroData.get("bairro");
+                    Double idh = (Double) bairroData.get("idh");
+
+                    inserirDadosIDH(bairro, idh);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        } else {
+            System.out.println("Erro ao ler o arquivo do S3.");
         }
 
-        for (Map<String, Object> bairroData : bairrosIDHList) {
-            String bairro = (String) bairroData.get("bairro");
-            Double idh = (Double) bairroData.get("idh");
 
-            inserirDadosIDH(bairro, idh);
-        }
     }
 
     public void inserirDadosIDH(String bairro, Double idh) {
@@ -284,17 +285,17 @@ public class LerArquivos {
         JdbcTemplate connection = dbConnectionProvider.getConnection();
 
         // Verifica se o bairro já existe na tabela DadosIDH
-        String verificaBairroSql = "SELECT COUNT(1) FROM DadosIDH WHERE bairro = ?";
-        Integer bairroExistente = connection.queryForObject(verificaBairroSql, Integer.class, bairro);
+        String verificaBairroSql = "SELECT COUNT(1) FROM DadosInseridos WHERE LOWER(bairro) LIKE LOWER(?)";
+        Integer bairroExistente = connection.queryForObject(verificaBairroSql, Integer.class, "%" + bairro + "%");
 
         if (bairroExistente > 0) {
             // O bairro já existe, então vamos atualizar o valor de IDH
-            String updateSql = "UPDATE DadosIDH SET idh = ? WHERE bairro = ?";
+            String updateSql = "UPDATE DadosInseridos SET idh = ?, dtInsercao = NOW() WHERE bairro = ?";
             connection.update(updateSql, idh, bairro);
             System.out.println("Dados do IDH atualizados para o bairro: " + bairro);
         } else {
             // O bairro não existe, vamos inserir uma nova linha para esse bairro
-            String insertSql = "INSERT INTO DadosInseridos (bairro, densidade) VALUES (?, ?)";
+            String insertSql = "INSERT INTO DadosInseridos (bairro, idh, dtInsercao) VALUES (?, ?, NOW())";
             connection.update(insertSql, bairro, idh);
             System.out.println("Dados inseridos para o bairro: " + bairro);
         }

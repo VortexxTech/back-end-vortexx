@@ -16,7 +16,11 @@ public class Main {
     public static void main(String[] args) throws S3Exception {
         LerArquivos arquivos = new LerArquivos();
 
-        arquivos.lerDensidadeDemografica("s3-castro-lab", "densidade_sao_paulo_bairros.xlsx");
+        String bucketName = "s3-castro-lab";
+
+        arquivos.lerIDH(bucketName, "7_Indice_de_desenvolvimento_humano_municip_2000_10962.xls");
+
+        arquivos.lerDensidadeDemografica(bucketName, "densidade_sao_paulo_bairros.xlsx");
     }
 }
 
