@@ -357,94 +357,27 @@ public class LerArquivos {
         }
     }
 
-    public void lerRendaPerCapita(String bucketName, String archiveName) {
-        InputStream arquivoS3 = lerArquivoS3(bucketName, archiveName);
-
-        if (arquivoS3 != null) {
-            List<Map<String, Object>> distritosRendaList = new ArrayList<>();
-
-            try (HSSFWorkbook workbook = new HSSFWorkbook(arquivoS3)) {
-                HSSFSheet sheet = workbook.getSheetAt(0); // A primeira aba do Excel (índice 0)
-
-                // Itera sobre as linhas do arquivo (ajustar o range de acordo com seu arquivo)
-                for (int i = 7; i <= 82; i++) {
-                    String distrito = sheet.getRow(i).getCell(0) != null ? sheet.getRow(i).getCell(0).getStringCellValue() : "";
-                    Double faixaMenosDeMeio = sheet.getRow(i).getCell(1) != null ? sheet.getRow(i).getCell(1).getNumericCellValue() : 0.0;
-                    Double faixaMeioAMenosDe1 = sheet.getRow(i).getCell(2) != null ? sheet.getRow(i).getCell(2).getNumericCellValue() : 0.0;
-                    Double faixa1AMenosDe15 = sheet.getRow(i).getCell(3) != null ? sheet.getRow(i).getCell(3).getNumericCellValue() : 0.0;
-                    Double faixa15AMenosDe3 = sheet.getRow(i).getCell(4) != null ? sheet.getRow(i).getCell(4).getNumericCellValue() : 0.0;
-                    Double faixa3AMenosDe5 = sheet.getRow(i).getCell(5) != null ? sheet.getRow(i).getCell(5).getNumericCellValue() : 0.0;
-                    Double faixa5AMenosDe10 = sheet.getRow(i).getCell(6) != null ? sheet.getRow(i).getCell(6).getNumericCellValue() : 0.0;
-                    Double faixa10EMais = sheet.getRow(i).getCell(7) != null ? sheet.getRow(i).getCell(7).getNumericCellValue() : 0.0;
-
-                    String regex = "\\([^)]*\\)";
-                    distrito = distrito.replaceAll(regex, "").trim();
-
-                    System.out.println("Distrito: " + distrito + " | Faixas de Renda per Capita: "
-                            + faixaMenosDeMeio + ", " + faixaMeioAMenosDe1 + ", " + faixa1AMenosDe15 + ", "
-                            + faixa15AMenosDe3 + ", " + faixa3AMenosDe5 + ", " + faixa5AMenosDe10 + ", " + faixa10EMais);
-
-                    // Adiciona os dados de renda à lista
-                    Map<String, Object> distritoData = new HashMap<>();
-                    distritoData.put("distrito", distrito);
-                    distritoData.put("faixaMenosDeMeio", faixaMenosDeMeio);
-                    distritoData.put("faixaMeioAMenosDe1", faixaMeioAMenosDe1);
-                    distritoData.put("faixa1AMenosDe15", faixa1AMenosDe15);
-                    distritoData.put("faixa15AMenosDe3", faixa15AMenosDe3);
-                    distritoData.put("faixa3AMenosDe5", faixa3AMenosDe5);
-                    distritoData.put("faixa5AMenosDe10", faixa5AMenosDe10);
-                    distritoData.put("faixa10EMais", faixa10EMais);
-                    distritosRendaList.add(distritoData);
-                }
-
-                // Insere os dados no banco
-                for (Map<String, Object> distritoData : distritosRendaList) {
-                    String distrito = (String) distritoData.get("distrito");
-                    Double faixaMenosDeMeio = (Double) distritoData.get("faixaMenosDeMeio");
-                    Double faixaMeioAMenosDe1 = (Double) distritoData.get("faixaMeioAMenosDe1");
-                    Double faixa1AMenosDe15 = (Double) distritoData.get("faixa1AMenosDe15");
-                    Double faixa15AMenosDe3 = (Double) distritoData.get("faixa15AMenosDe3");
-                    Double faixa3AMenosDe5 = (Double) distritoData.get("faixa3AMenosDe5");
-                    Double faixa5AMenosDe10 = (Double) distritoData.get("faixa5AMenosDe10");
-                    Double faixa10EMais = (Double) distritoData.get("faixa10EMais");
-
-                    inserirDadosRendaPerCapita(distrito, faixaMenosDeMeio, faixaMeioAMenosDe1, faixa1AMenosDe15,
-                            faixa15AMenosDe3, faixa3AMenosDe5, faixa5AMenosDe10, faixa10EMais);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } else {
-            System.out.println("Erro ao ler o arquivo do S3.");
-        }
-    }
-
-    public void inserirDadosRendaPerCapita(String distrito, Double faixaMenosDeMeio, Double faixaMeioAMenosDe1,
-                                           Double faixa1AMenosDe15, Double faixa15AMenosDe3, Double faixa3AMenosDe5,
-                                           Double faixa5AMenosDe10, Double faixa10EMais) {
-        // Conecta ao banco de dados
+    public void atualizarZonaDosBairros() {
         DBConnectionProvider dbConnectionProvider = new DBConnectionProvider();
         JdbcTemplate connection = dbConnectionProvider.getConnection();
 
-        // Verifica se o distrito já existe na tabela DadosRendaPerCapita
-        String verificaDistritoSql = "SELECT COUNT(1) FROM DadosRendaPerCapita WHERE LOWER(bairro) LIKE LOWER(?)";
-        Integer distritoExistente = connection.queryForObject(verificaDistritoSql, Integer.class, "%" + distrito + "%");
+        for (Bairros bairroEnum : Bairros.values()) {
+            String bairro = bairroEnum.getNome();
+            String zona = bairroEnum.getZona();
 
-        if (distritoExistente > 0) {
-            String updateSql = "UPDATE DadosRendaPerCapita SET faixaMenosDeMeio = ?, faixaMeioAMenosDe1 = ?, faixa1AMenosDe15 = ?, " +
-                    "faixa15AMenosDe3 = ?, faixa3AMenosDe5 = ?, faixa5AMenosDe10 = ?, faixa10EMais = ?, dtInsercao = NOW() " +
-                    "WHERE LOWER(bairro) LIKE LOWER(?)";
-            connection.update(updateSql, faixaMenosDeMeio, faixaMeioAMenosDe1, faixa1AMenosDe15, faixa15AMenosDe3,
-                    faixa3AMenosDe5, faixa5AMenosDe10, faixa10EMais, "%" + distrito + "%");
-            System.out.println("Dados de renda per capita atualizados para o bairro: " + distrito);
-        } else {
-            // O distrito não existe, vamos inserir uma nova linha para esse distrito
-            String insertSql = "INSERT INTO DadosRendaPerCapita (bairro, faixaMenosDeMeio, faixaMeioAMenosDe1, faixa1AMenosDe15, " +
-                    "faixa15AMenosDe3, faixa3AMenosDe5, faixa5AMenosDe10, faixa10EMais, dtInsercao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())";
-            connection.update(insertSql, distrito, faixaMenosDeMeio, faixaMeioAMenosDe1, faixa1AMenosDe15, faixa15AMenosDe3,
-                    faixa3AMenosDe5, faixa5AMenosDe10, faixa10EMais);
-            System.out.println("Dados de renda per capita inseridos para o bairro: " + distrito);
+            String verificaBairroSql = "SELECT COUNT(1) FROM DadosRendaPerCapita WHERE LOWER(bairro) = LOWER(?)";
+            Integer bairroExistente = connection.queryForObject(verificaBairroSql, Integer.class, bairro);
+
+            if (bairroExistente > 0) {
+                String updateSql = "UPDATE DadosRendaPerCapita SET zona = ? WHERE LOWER(bairro) = LOWER(?)";
+                connection.update(updateSql, zona, bairro);
+                System.out.println("Zona atualizada para o bairro: " + bairro + " - Zona: " + zona);
+            } else {
+                String insertSql = "INSERT INTO DadosRendaPerCapita (bairro, zona, dtInsercao) VALUES (?, ?, NOW())";
+                connection.update(insertSql, bairro, zona);
+                System.out.println("Bairro inserido no banco: " + bairro + " - Zona: " + zona);
+
+            }
         }
     }
 
@@ -493,5 +426,3 @@ public class LerArquivos {
         }
     }
 }
-
-
