@@ -361,9 +361,9 @@ public class LerArquivos {
         DBConnectionProvider dbConnectionProvider = new DBConnectionProvider();
         JdbcTemplate connection = dbConnectionProvider.getConnection();
 
-        for (Bairros bairroEnum : Bairros.values()) {
-            String bairro = bairroEnum.getNome();
-            String zona = bairroEnum.getZona();
+        for (Bairros bairros : Bairros.values()) {
+            String bairro = bairros.getNome();
+            String zona = bairros.getZona();
 
             String verificaBairroSql = "SELECT COUNT(1) FROM DadosRendaPerCapita WHERE LOWER(bairro) = LOWER(?)";
             Integer bairroExistente = connection.queryForObject(verificaBairroSql, Integer.class, bairro);
