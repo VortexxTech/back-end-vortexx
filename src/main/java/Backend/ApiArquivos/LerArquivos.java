@@ -7,6 +7,8 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import Backend.DBConnectionProvider;
+import Backend.Slack.App;
+import Backend.Slack.Slack;
 import S3.S3Provider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -217,6 +219,14 @@ public class LerArquivos {
                 String insertSql = "INSERT INTO DadosInseridos (bairro, valorM2, dtInsercao) VALUES (?, ?, NOW())";
                 connection.update(insertSql, bairro, custoM2);
                 logger.info("Dados inseridos para o bairro: " + bairro);
+
+                try {
+                    App.enviarNotificacao("Os dados de bairro, valor do metro quadrado foram atualizados!");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
@@ -288,6 +298,15 @@ public class LerArquivos {
                 String insertSql = "INSERT INTO DadosInseridos (bairro, densidadeDemografica, dtInsercao) VALUES (?, ?, NOW())";
                 connection.update(insertSql, bairro, densidade);
                 System.out.println("Dados inseridos para o bairro: " + bairro);
+
+                try {
+                    App.enviarNotificacao("Os dados de bairro e a densidade demográfica foram atualizados!");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
             }
         }
     }
@@ -354,6 +373,14 @@ public class LerArquivos {
             String insertSql = "INSERT INTO DadosInseridos (bairro, idh, dtInsercao) VALUES (?, ?, NOW())";
             connection.update(insertSql, bairro, idh);
             System.out.println("Dados inseridos para o bairro: " + bairro);
+
+            try {
+                App.enviarNotificacao("Os dados de bairro e IDH foram atualizados!");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -369,14 +396,22 @@ public class LerArquivos {
             Integer bairroExistente = connection.queryForObject(verificaBairroSql, Integer.class, bairro);
 
             if (bairroExistente > 0) {
-                String updateSql = "UPDATE DadosRendaPerCapita SET zona = ? WHERE LOWER(bairro) = LOWER(?)";
+                String updateSql = "UPDATE DadosInseridos SET zona = ? WHERE LOWER(bairro) = LOWER(?)";
                 connection.update(updateSql, zona, bairro);
                 System.out.println("Zona atualizada para o bairro: " + bairro + " - Zona: " + zona);
             } else {
-                String insertSql = "INSERT INTO DadosRendaPerCapita (bairro, zona, dtInsercao) VALUES (?, ?, NOW())";
+                String insertSql = "INSERT INTO DadosInseridos (bairro, zona, dtInsercao) VALUES (?, ?, NOW())";
                 connection.update(insertSql, bairro, zona);
                 System.out.println("Bairro inserido no banco: " + bairro + " - Zona: " + zona);
 
+            }
+
+            try {
+                App.enviarNotificacao("Os dados de bairro e zona foram atualizados!");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
     }

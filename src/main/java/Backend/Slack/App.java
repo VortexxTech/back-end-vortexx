@@ -5,9 +5,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public class App {
-//        JSONObject json = new JSONObject();
-//
-//        json.put("text", "Olá mundo!");
-//
-//        Slack.enviarMensagem(json);
+    public static void enviarNotificacao(String mensagem) throws IOException, InterruptedException {
+        JSONObject json = new JSONObject();
+
+        json.put("text", mensagem);
+
+        Slack.enviarMensagem(json);
+    }
 }
